@@ -5,47 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SearchText"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" FontSize="14">
+        Title="MainWindow" Height="350" Width="650" FontSize="14">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition/>
-            <RowDefinition />
+            <RowDefinition Height="111*" />
+            <RowDefinition Height="193*"/>
+            <RowDefinition Height="30*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100*" />
-            <ColumnDefinition Width="60*" />
+            <ColumnDefinition Width="380" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="49*" />
+                <RowDefinition Height="30*"/>
+                <RowDefinition Height="32*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="13*" />
+                <ColumnDefinition Width="5*"  />
+                <ColumnDefinition Width="7*"  />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Margin="5,5,0,0">
+                <Button x:Name="BtnOpenFail" Content="Открыть" Click="BtnOpenFail_Click"  VerticalAlignment="Top"/>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Название файла" HorizontalAlignment="Center"   VerticalAlignment="Top"  Margin="5,5,0,0"/>
+                    <TextBlock x:Name="TxtBlNamefail" HorizontalAlignment="Left"  Margin="5,0,0,0"  VerticalAlignment="Stretch"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="1">
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Visible">
+                    <TextBlock x:Name="TxtBlInfo" Text="" Width="auto"  HorizontalAlignment="Stretch"   VerticalAlignment="Top"/>
+                </ScrollViewer>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,5,0,0">
+                <TextBox x:Name="TxtBxNumber1"  MinWidth="40" FontSize="16" Margin="5,0,0,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="TxtBxNumber2"  MinWidth="40" Margin="5,0,0,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+                <Button x:Name="BtnSelect" Content="Выбрать" Margin="5,0,0,0" Click="BtnSelect_Click"/>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Margin="0,5,0,0">
+
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,5">
+            <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+                    <TextBox x:Name="TxtBlOutInfo"  Width="auto" SelectionChanged="TxtBlOutInfo_SelectionChanged" GotFocus="TxtBlOutInfo_GotFocus" />
+              </ScrollViewer>                
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="2" Grid.RowSpan="3">
+            <StackPanel >
+                <TextBlock x:Name="TxtBlkNumberKoll" Text="Колличество" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="5,0,0,0"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Column="0" Margin="0,111,0,1" Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8*" />
+                <ColumnDefinition Width="7*" />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition/>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="43*" />
-                <ColumnDefinition Width="29*"  />
-                <ColumnDefinition Width="28*"  />
-            </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal" Margin="5,5,0,0">
-                <Button x:Name="BtnOpenFail" Content="Открыть" Click="BtnOpenFail_Click" />
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Название файла" HorizontalAlignment="Center"   VerticalAlignment="Top"/>
-                    <TextBlock x:Name="TxtBlNamefail" HorizontalAlignment="Left"  Margin="5,5,0,0" Width="77"/>
-                </StackPanel>
+            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3">
+                <Button x:Name="AddProbel" IsEnabled="False" Content="Добавить комментарий" Click="AddProbel_Click" HorizontalAlignment="Right"  Margin="5"/>
+                <Button x:Name="DelProbel" IsEnabled="False" Content="Удалить комментарий" HorizontalAlignment="Right" Margin="5" Click="DelProbel_Click"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.RowSpan="2">
-                <TextBlock x:Name="TxtBlInfo" Text="" Width="auto"  HorizontalAlignment="Stretch"   VerticalAlignment="Top"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,5,0,0">
-                <TextBox x:Name="TxtBxNumber1"  MinWidth="40" FontSize="16" Margin="5,0,0,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="TxtBxNumber2"  MinWidth="40" Margin="5,0,0,0" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
-                <Button x:Name="BtnSelect" Content="Выбрать" Margin="5,0,0,0"/>
+            <StackPanel Orientation="Vertical" Grid.Row="3" Grid.ColumnSpan="2">
+                <TextBlock Text="Пушкарев Александр  Викторович"/>
+                <TextBlock Text="alexander_pushkar@mail.ru"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.Column="1" Grid.RowSpan="3">
-            <TextBlock x:Name="TxtBlOutInfo" Text="" Width="auto"  HorizontalAlignment="Stretch"   VerticalAlignment="Top"/>
+        <Grid Grid.Row="1">
+            
+        </Grid>
+        <Grid Grid.Row="2">
+            <StackPanel Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <Button x:Name="OutDoc" IsEnabled="False" Content="Сохранить" Click="OutDoc_Click" Margin="0,0,5,0"   />
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>
