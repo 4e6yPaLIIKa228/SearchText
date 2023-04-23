@@ -1,4 +1,16 @@
- !
- 1 sUTm(1)%rXL = 123.32
-    sUTm(1)%rYL = 1444.3333
-    sUTm(1)%rZL = 555.11776576575675675675
+
+	sUTm(1)%rXL=0.0000
+	sUTm(1)%rYL=385.2132
+	sUTm(1)%rZL=379.4068
+
+	sUTm(2)%rXL=77.0079
+	sUTm(2)%rYL=378.1865
+	sUTm(2)%rZL=379.0630
+
+	sUTm(3)%rXL=218.1933
+	sUTm(3)%rYL=323.1930
+	sUTm(3)%rZL=377.3284
+
+	sUTm(4)%rXL=276.4119
+	sUTm(4)%rYL=276.4120
+	sUTm(4)%rZL=376.9206

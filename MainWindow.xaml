@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SearchText"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="650" FontSize="14">
+        Title="MainWindow" Height="450" Width="750" FontSize="14">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="111*" />
@@ -51,15 +51,21 @@
         </Grid>
         <Grid Grid.Column="1" Grid.RowSpan="2" Margin="5,5,5,5">
             <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-                    <TextBox x:Name="TxtBlOutInfo"  Width="auto" SelectionChanged="TxtBlOutInfo_SelectionChanged" GotFocus="TxtBlOutInfo_GotFocus" />
-              </ScrollViewer>                
+                <StackPanel>
+                    <TextBox x:Name="TxtBlOutInfo"  Width="auto" Height="auto" />
+                    <TextBox x:Name="TxtTest" Width="auto" Visibility="Collapsed" Height="100"/>
+                    <TextBox x:Name="TxtTest2" Width="auto" Visibility="Collapsed" Height="100"/>
+                </StackPanel>
+            </ScrollViewer>   
+            
         </Grid>
         <Grid Grid.Column="1" Grid.Row="2" Grid.RowSpan="3">
-            <StackPanel >
-                <TextBlock x:Name="TxtBlkNumberKoll" Text="Колличество" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="5,0,0,0"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock  Text="Колличество " HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="5,0,0,0"/>
+                <TextBlock x:Name="TxtBlkNumberKoll" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="5,0,0,0"/>
             </StackPanel>
         </Grid>
-        <Grid Grid.Column="0" Margin="0,111,0,1" Grid.RowSpan="2">
+        <Grid Grid.Column="0" Grid.Row="1"  Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="8*" />
                 <ColumnDefinition Width="7*" />
@@ -69,18 +75,25 @@
                 <RowDefinition/>
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3">
-                <Button x:Name="AddProbel" IsEnabled="False" Content="Добавить комментарий" Click="AddProbel_Click" HorizontalAlignment="Right"  Margin="5"/>
+            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" HorizontalAlignment="Left"  >
+                <Button x:Name="AddProbel" IsEnabled="False" Content="Добавить комментарий" Click="AddProbel_Click" HorizontalAlignment="Left"  Margin="5"/>
                 <Button x:Name="DelProbel" IsEnabled="False" Content="Удалить комментарий" HorizontalAlignment="Right" Margin="5" Click="DelProbel_Click"/>
+                <Button x:Name="DelInfo" IsEnabled="True" Content="Удалить промежуток" HorizontalAlignment="Right" Margin="5" Click="DelInfo_Click"/>                
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="2">
+                <TextBlock Text="Удалить промежуток"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="BtnFirstMouse" Content="Установить начало" Margin="5,5,0,0" Click="BtnFirstMouse_Click"/>
+                    <Button x:Name="BtnEndMouse" Content="Установить конец" Margin="5,5,0,0" Click="BtnEndMouse_Click"/>
+                </StackPanel>
+                <Button x:Name="BtnBack" Content="Отмена" Width="100" HorizontalAlignment="Left" Margin="5,5,0,0" Click="BtnBack_Click"/>
+
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Row="3" Grid.ColumnSpan="2">
                 <TextBlock Text="Пушкарев Александр  Викторович"/>
                 <TextBlock Text="alexander_pushkar@mail.ru"/>
             </StackPanel>
-        </Grid>
-        <Grid Grid.Row="1">
-            
-        </Grid>
+        </Grid>        
         <Grid Grid.Row="2">
             <StackPanel Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Right">
                 <Button x:Name="OutDoc" IsEnabled="False" Content="Сохранить" Click="OutDoc_Click" Margin="0,0,5,0"   />
