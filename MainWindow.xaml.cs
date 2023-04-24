@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,7 +28,7 @@ namespace SearchText
     public partial class MainWindow : Window
     {
         string GPSFailNew = null, GPSFailOld = null;
-        string TextOld =null,TextNew=null;
+        string TextOld = null, TextNew = null,KollOldText=null;
         int Number1 = 0, Number2, Koll = 0;
         public MainWindow()
         {
@@ -44,7 +45,7 @@ namespace SearchText
             try
             {
                 //TxtBlInfo.Text = null;
-               // GPSFailNew = null;
+                // GPSFailNew = null;
                 //GPSFailOld = null;
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
@@ -56,13 +57,13 @@ namespace SearchText
                     TxtBlInfo.Text = null;
                     GPSFailNew = Path.GetFullPath(openFileDialog.FileName);
                     if (GPSFailNew == null)
-                    {                       
-                       GPSFailOld = Path.GetFullPath(openFileDialog.FileName); 
+                    {
+                        GPSFailOld = Path.GetFullPath(openFileDialog.FileName);
                     }
                     else
                     {
                         GPSFailOld = GPSFailNew;
-                    }               
+                    }
                     TxtBlNamefail.Text = (Path.GetFileName(openFileDialog.FileName));
                     //  TxtBlNamefail.Text = openFileDialog.FileName;
                     // TxtBlNamefail.Text = File.ReadAllText(openFileDialog.FileName);//Текс файла
@@ -72,6 +73,9 @@ namespace SearchText
                     FocusManager.SetFocusedElement(this, TxtBxNumber1);
                     TxtBxNumber1.Text = "1";
                     TxtBxNumber2.Text = "1";
+                    TxtBxNumber1.IsEnabled = true;
+                    TxtBxNumber2.IsEnabled = true;
+                    BtnSelect.IsEnabled = true;
                     // ReadInfoCommnet();
                 }
             }
@@ -102,13 +106,13 @@ namespace SearchText
                     }
                 }
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
 
-        public void  ReadIfnoTextAsync()
+        public void ReadIfnoTextAsync()
         {
             try
             {
@@ -173,10 +177,10 @@ namespace SearchText
         {
             Number1 = Convert.ToInt32(TxtBxNumber1.Text);
             Number2 = Convert.ToInt32(TxtBxNumber2.Text);
-            string str = text;          
+            string str = text;
             string ID = null;
-            int KollProbel = 0;            
-            string textx = $@"sUTm()%rXL=";
+            int KollProbel = 0;
+            string textx = "sUTm()%rXL=";
             string numberx = null;
             string texty = "sUTm()%rXL=";
             string numbery = null;
@@ -186,19 +190,19 @@ namespace SearchText
             {
                 char c = str[i];
                 string textc = Convert.ToString(c);
-               
+
                 if (textc == " ")
                 {
-                   // MessageBox.Show("Пусто");
-                    KollProbel ++;
+                    // MessageBox.Show("Пусто");
+                    KollProbel++;
                 }
-                else if (KollProbel==0) //ID 
+                else if (KollProbel == 0) //ID 
                 {
                     ID += Convert.ToInt32(textc);
                     textx = $@"sUTm({ID})%rXL=";
                     texty = $@"sUTm({ID})%rYL=";
                     textz = $@"sUTm({ID})%rZL=";
-                   // KollProbel++;
+                    // KollProbel++;
                 }
                 else if (KollProbel == 1) //определение x
                 {
@@ -208,12 +212,13 @@ namespace SearchText
                 {
                     numbery += textc;
 
-                }else if (KollProbel == 3) //определение z
+                }
+                else if (KollProbel == 3) //определение z
                 {
                     numberz += textc;
-                }                
+                }
             }
-            if (Convert.ToInt32(ID) >= Number1 && Convert.ToInt32(ID) <= Number2)            
+            if (Convert.ToInt32(ID) >= Number1 && Convert.ToInt32(ID) <= Number2)
             {
                 TxtBlOutInfo.Text += Environment.NewLine;
                 TxtBlOutInfo.Text += "\t" + textx + numberx + Environment.NewLine;
@@ -221,6 +226,7 @@ namespace SearchText
                 TxtBlOutInfo.Text += "\t" + textz + numberz + Environment.NewLine;
                 Koll++;
                 TxtBlkNumberKoll.Text = Convert.ToString(Koll);
+                KollOldText = Convert.ToString(Koll);
                 //TxtTest.Text += Environment.NewLine;
                 //TxtTest.Text += "\t" + textx + numberx + Environment.NewLine;
                 //TxtTest.Text += "\t" + texty + numbery + Environment.NewLine;
@@ -235,29 +241,36 @@ namespace SearchText
             }
 
         }
-       
+
         public void TextReadOfNewID()
-        {           
+        {
             try
-            {         
-                
+            {
+
                 // TextOld = TxtTest.Text;               
                 TextNew = TxtBlOutInfo.Text;
                 TxtBlOutInfo.Text = null;
-                TxtBlOutInfo.Text += Environment.NewLine;
+                //TxtBlOutInfo.Text += Environment.NewLine;
                 int intxyz = 0;
-                int indexid = 0;
+                //int indexid = 0;
                 int intoldnumber = 0;
                 int numbecheack = 0;
                 string IDOld = null;
                 int IDNew = 1;
                 // string[] lines = File.ReadAllLines(GPSFailOld);
-                string[] lines = TextNew.Split('\t');
-               // lines = lines.ReadAllLines();
-                for (int i = 0; i < lines.Length;)
+                string[] lines = TextNew.Split('\n'); //
+                string text = lines[0];
+                string str = text;
+                // lines = lines.ReadAllLines();
+                //MessageBox.Show(str);                
+                //else if (str != "!\r\n" && str != "!")
+                //{
+                //    TxtBlOutInfo.Text += Environment.NewLine;
+                //}
+                for (int i = 0; i < lines.Length-1;i++)
                 {
-                    string text = lines[i];
-                    string str = text;
+                    text = lines[i];
+                    str = text;
                     string textnumber = text;
                     string textx = $@"sUTm()%rXL=";
                     string numberx = null;
@@ -265,19 +278,28 @@ namespace SearchText
                     string numbery = null;
                     string textz = "sUTm()%rXL=";
                     string numberz = null;
-                    if (str != "" || str != " " || str != "\t")
+                    int krat4 = i % 4;
+                    if (((str != "!\n") && (str != "!") && (str != "!\r\n") && (str != "!\r\n") && (str != "!\r")) && i == 0)    /*((str != "!\n") || (str != "!") || (str != "!\r\n") || (str != "!\r\n"))*/
                     {
-                        for (int j = 5; j < text.Length; j++)
+                        TxtBlOutInfo.Text += Environment.NewLine;
+                    }
+                    else if (((str == "!\n") || (str == "!") || (str == "!\r\n") || (str == "!\r\n") || (str == "!\r")) && i == 0)
+                    {
+                        TxtBlOutInfo.Text += str;
+                    }
+                    if (str != "" || str != " " || str != "\t" || str !="!")
+                    {
+                        for (int j = 6; j < text.Length; j++)
                         {
                             numbecheack++;
                             char c = str[j];
                             int kollleng = text.Length;
                             string textc = Convert.ToString(c);
                             int lengidold = 0;
-                            if (j == 5 && intoldnumber == 0) //определяем ID
+                            if (j == 6 && intoldnumber == 0) //определяем ID
                             {
-                                for (int a = 5; textnumber != ")"; a++)
-                                {  
+                                for (int a = 6; textnumber != ")"; a++)
+                                {
                                     char f = str[a];
                                     //c = str[a];
                                     textnumber = Convert.ToString(f);
@@ -289,25 +311,25 @@ namespace SearchText
                                     else
                                     {
                                         IDOld += textnumber;
-                                    }                                    
+                                    }
                                 }
                                 intoldnumber = 1;
                             }
                             //Сделать проверку на длинну id
                             if (Convert.ToInt32(IDOld) >= 10)  //1 
                             {
-                                lengidold = IDOld.Length-1;
+                                lengidold = IDOld.Length - 1;
                                 //indexid = Convert.ToInt32(IDOld) % Convert.ToInt32(IDOld) + lengidold;
                             }
-                            if (j >= 12 + lengidold && intxyz == 0)
+                            if (j >= 13 + lengidold && intxyz == 0)
                             {
                                 numberx += textc;
                             }
-                            else if (j >= 12 + lengidold && intxyz == 1) //определение x
+                            else if (j >= 13 + lengidold && intxyz == 1) //определение x
                             {
                                 numbery += textc;
                             }
-                            else if (j >= 12 + lengidold && intxyz == 2) //определение y
+                            else if (j >= 13 + lengidold && intxyz == 2) //определение y
                             {
                                 numberz += textc;
                             }
@@ -336,15 +358,45 @@ namespace SearchText
                                     TxtBlkNumberKoll.Text = Convert.ToString(IDNew - 1);
                                 }
                             }
+                        }                        
+                        if (((str == "!\n") || (str == "!") || (str == "!\r\n") || (str == "!\r\n") || (str == "!\r")) && (i % 4 == 0) && i !=0)
+                        {
+                            TxtBlOutInfo.Text += str;
                         }
+                        else if (((str != "!\n") && (str != "!") && (str != "!\r\n") && (str != "!\r\n") && (str != "!\r")) && (i % 4 == 0) && i!= 0)
+                        {
+                            TxtBlOutInfo.Text += Environment.NewLine;
+                        }
+                        //if ((str == "!\n" || str == "!" || str == "!\r\n") && TxtBlOutInfo.Text == "")//узанть максильную длинну, и отнять 1 длинну
+                        //{
+
+                        //}
+                        //else if ((str != "!\n" || str == "!" || str != "!\r\n"))
+                        //{
+                        //    TxtBlOutInfo.Text += Environment.NewLine;
+                        //}
+                        //else if (str != "!\n" && i == 0 && TxtBlkNumberKoll.Text != "")
+                        //{
+
+                        //}
                     }
-                    i++;
+
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-        }    
+        }
+        public void TextValidationTextBox(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space) e.Handled = true;
+        }
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]");
+            e.Handled = regex.IsMatch(e.Text);
+        }
 
         private void BtnSelect_Click(object sender, RoutedEventArgs e)
         {
@@ -356,13 +408,24 @@ namespace SearchText
             }
             else
             {
-                TxtBlOutInfo.Text = null;
-                TxtTest.Text = null;
-                TextOld = null;
-                ReadIfnoTextAsync();
-                AddProbel.IsEnabled = true;
-                DelProbel.IsEnabled= true;
-                OutDoc.IsEnabled = true;
+                Number1 = Convert.ToInt32(TxtBxNumber1.Text);
+                Number2 = Convert.ToInt32(TxtBxNumber2.Text);
+                if (Number1 > Number2)
+                {
+                    MessageBox.Show("Первое число не может быть больше второго числа");
+                }
+                else
+                {
+                    TxtBlOutInfo.Text = null;
+                    TxtTest.Text = null;
+                    TextOld = null;
+                    ReadIfnoTextAsync();
+                    AddProbel.IsEnabled = true;
+                    DelProbel.IsEnabled = true;
+                    OutDoc.IsEnabled = true;
+                    BtnFirstMouse.IsEnabled = true;   
+                    BtnBack.IsEnabled = true;
+                } 
             }
         }
 
@@ -373,7 +436,7 @@ namespace SearchText
             TxtBlOutInfo.Select(0, TxtBlOutInfo.Text.Length);
             //MessageBox.Show(TxtBlOutInfo.SelectedText);
             string DirectoryFale = Path.GetDirectoryName(GPSFailOld);
-            
+
             DirectoryInfo di = new DirectoryInfo(DirectoryFale);
             FileInfo[] TXTFiles = di.GetFiles("out.txt");
             for (int i = 1; i != 0;)
@@ -385,9 +448,9 @@ namespace SearchText
                     StreamWriter sw = new StreamWriter($@"{DirectoryFale}\out.txt");
                     sw.Write(TxtBlOutInfo.SelectedText);
                     sw.Close();
-                    i = 0;                    
+                    i = 0;
                 }
-                else if (TXTFilesi.Length == 0 )
+                else if (TXTFilesi.Length == 0)
                 {
                     StreamWriter sw = new StreamWriter($@"{DirectoryFale}\out{i}.txt");
                     sw.Write(TxtBlOutInfo.SelectedText);
@@ -395,12 +458,11 @@ namespace SearchText
                     i = 0;
                 }
                 else
-                {                               
+                {
                     i++;
-                } 
+                }
             }
-           
-
+            FocusManager.SetFocusedElement(this, TxtBxNumber1);
         }
 
         private void DelProbel_Click(object sender, RoutedEventArgs e) //Удалить !
@@ -413,10 +475,11 @@ namespace SearchText
                 //string asda = TxtBlOutInfo.Text.Select(TxtBlOutInfo.Text.Length, 0);
                 //TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex, TxtBlOutInfo.Text.Length);
                 int adasd_0 = TxtBlOutInfo.CaretIndex;
-                int adasd_1 = TxtBlOutInfo.CaretIndex-1;
-                int adasd_2 = TxtBlOutInfo.CaretIndex+1;
-                MessageBox.Show(adasd_0.ToString() + "    " + adasd_1.ToString() + "   " + adasd_2.ToString());
-                TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex-1, 2);
+                int adasd_1 = TxtBlOutInfo.CaretIndex - 1;
+                int adasd_2 = TxtBlOutInfo.CaretIndex + 1;
+                //MessageBox.Show(adasd_0.ToString() + "    " + adasd_1.ToString() + "   " + adasd_2.ToString());
+                //TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex - 1, 2);
+                TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex - 1, 1);
                 //SelectedText                
                 // string sldtxt = TxtBlOutInfo.SelectedText.Remove(Convert.ToInt32(TxtBlOutInfo.Cursor),0);
                 //  MessageBox.Show(sldtxt.ToString());
@@ -430,71 +493,97 @@ namespace SearchText
                 //TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex - 1);
                 //TxtBlOutInfo.SelectedText.Remove(TxtBlOutInfo.CaretIndex-1, TxtBlOutInfo.Text.Length);
             }
-            catch (Exception ex) 
-            { 
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
-        
+
         int MouseFirst = 0, MouseEnd = 0;
 
-        public void FirstMouse()
+        public void FirstMouse() //Координаты мыши начало, для удаления
         {
             MouseFirst = TxtBlOutInfo.CaretIndex;
-            MessageBox.Show(MouseFirst.ToString());
+            TextOld = TxtBlOutInfo.Text;
+            TxtBlOutInfo.Text = TxtBlOutInfo.Text.Insert(TxtBlOutInfo.CaretIndex, "<");
+            BtnEndMouse.IsEnabled = true;
+            BtnFirstMouseDell.IsEnabled = true;
+
+            //MessageBox.Show(MouseFirst.ToString());
 
         }
-        public void EndMouse()
+        public void EndMouse()//Координаты мыши конца, для удаления
         {
             MouseEnd = TxtBlOutInfo.CaretIndex;
-            MessageBox.Show(MouseEnd.ToString());
+            TextOld = TxtBlOutInfo.Text;
+            TxtBlOutInfo.Text = TxtBlOutInfo.Text.Insert(TxtBlOutInfo.CaretIndex, "<");
+            DelInfo.IsEnabled = true;
+            BtnEndMouseDell.IsEnabled = true;
+            //MessageBox.Show(MouseEnd.ToString());
         }
 
         public void DeleteForFirsEndMouse()
         {
+            int TextIndexMax = 0;
             try
             {
+                TextIndexMax = TxtBlOutInfo.Text.Length;
                 TextOld = TxtBlOutInfo.Text;
-                TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(MouseFirst-3, MouseEnd - MouseFirst+5);
+                if (TextIndexMax <= MouseEnd+3)
+                {
+                    TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(MouseFirst - 3, MouseEnd - MouseFirst + 6);
+                }
+                else
+                {
+                    TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(MouseFirst - 3, MouseEnd - MouseFirst + 7);
+                }
+
             }
-            catch(Exception ex) 
-            { 
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.ToString());
             }
+        }
+        private void BtnFirstMouseDell_Click(object sender, RoutedEventArgs e) //Координаты мыши начало, для сброса
+        {
+            TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(MouseFirst, 1);
+            MouseFirst = 0;
+            DelInfo.IsEnabled = false;
+            BtnFirstMouseDell.IsEnabled = false;
+            BtnEndMouse.IsEnabled = false;
+        }
+
+        private void BtnEndMouseDell_Click(object sender, RoutedEventArgs e)
+        {
+            TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(MouseEnd, 1);
+            MouseEnd = 0;
+            DelInfo.IsEnabled = false;
+            BtnEndMouseDell.IsEnabled = false;
+            DelInfo.IsEnabled = false;
         }
 
         private void BtnEndMouse_Click(object sender, RoutedEventArgs e)
         {
             EndMouse();
-            //DeleteForFirsEndMouse();
         }
-
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
             TxtBlOutInfo.Text = TextOld;
+            TxtBlkNumberKoll.Text = KollOldText;
         }
-
         private void BtnFirstMouse_Click(object sender, RoutedEventArgs e)
         {
             FirstMouse();
         }
-
         private void DelInfo_Click(object sender, RoutedEventArgs e)
         {
             DeleteForFirsEndMouse();
             TextReadOfNewID();
         }
-
-        private void TxtBlOutInfo_GotFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void OutDoc_Click(object sender, RoutedEventArgs e)
         {
             SafeFaile();
         }
-
         private void AddProbel_Click(object sender, RoutedEventArgs e)
         {
             TxtBlOutInfo.Text = TxtBlOutInfo.Text.Insert(TxtBlOutInfo.CaretIndex, "!");
