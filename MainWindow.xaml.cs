@@ -31,7 +31,7 @@ namespace SearchText
         string TextOld = null, TextNew = null,KollOldText=null;
         int Number1 = 0, Number2, Koll = 0;
         int MouseFirst = 0, MouseEnd = 0;
-        int ProverkaMouseFirst = 0;
+        int ProverkaMouseFirst = 0, ProverkaMouseEnd=0;
 
         public MainWindow()
         {
@@ -307,7 +307,7 @@ namespace SearchText
                     string textz = "sUTm()%rXL=";
                     string numberz = null;
                     int krat4 = i % 4;
-                    if (((str != "!\n") && (str != "!") && (str != "!\r\n") && (str != "!\r\n") && (str != "!\r")) && i == 0)    /*((str != "!\n") || (str != "!") || (str != "!\r\n") || (str != "!\r\n"))*/
+                    if (((str != "!\n") && (str != "!") && (str != "!\r\n") && (str != "!\r\n") && (str != "!\r")) && i == 0)    
                     {
                         TxtBlOutInfo.Text += Environment.NewLine;
                     }
@@ -501,38 +501,69 @@ namespace SearchText
             FocusManager.SetFocusedElement(this, TxtBxNumber1);
         }
 
+        int MouseDelete = 0;
         private void DelProbel_Click(object sender, RoutedEventArgs e) //Удалить !
         {
             try
             {
-                // int adasd = TxtBlOutInfo.CaretIndex;
-                //string fdfds = TxtBlOutInfo.Select(TxtBlOutInfo.CaretIndex,1);
-                // MessageBox.Show(adasd.ToString());
-                //string asda = TxtBlOutInfo.Text.Select(TxtBlOutInfo.Text.Length, 0);
-                //TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex, TxtBlOutInfo.Text.Length);
-                int adasd_0 = TxtBlOutInfo.CaretIndex;
-                int adasd_1 = TxtBlOutInfo.CaretIndex - 1;
-                int adasd_2 = TxtBlOutInfo.CaretIndex + 1;
-                //MessageBox.Show(adasd_0.ToString() + "    " + adasd_1.ToString() + "   " + adasd_2.ToString());
-                //TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex - 1, 2);
-                TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex - 1, 1);
-                //SelectedText                
-                // string sldtxt = TxtBlOutInfo.SelectedText.Remove(Convert.ToInt32(TxtBlOutInfo.Cursor),0);
-                //  MessageBox.Show(sldtxt.ToString());
-                //string a = f.GetPosition((Rectangle)sender).ToString();
-                //TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.SelectedText + 1, TxtBlOutInfo.Text.Length);
-                //MessageBox.Show(a);
-                //TxtBlOutInfo.Focus();
-                //TxtBlOutInfo.Select(0, TxtBlOutInfo.Text.Length);
-                //TxtBlOutInfo.Select(TxtBlOutInfo.CaretIndex-1, TxtBlOutInfo.CaretIndex);
-                //TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex - 1);
-                //TxtBlOutInfo.SelectedText.Remove(TxtBlOutInfo.CaretIndex-1, TxtBlOutInfo.Text.Length);
+                MouseDelete = TxtBlOutInfo.CaretIndex;
+                if (MouseDelete != 0)
+                {
+                    // int adasd = TxtBlOutInfo.CaretIndex;
+                    //string fdfds = TxtBlOutInfo.Select(TxtBlOutInfo.CaretIndex,1);
+                    // MessageBox.Show(adasd.ToString());
+                    //string asda = TxtBlOutInfo.Text.Select(TxtBlOutInfo.Text.Length, 0);
+                    //TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex, TxtBlOutInfo.Text.Length);
+                    //int adasd_0 = TxtBlOutInfo.CaretIndex;
+                    //int adasd_1 = TxtBlOutInfo.CaretIndex - 1;
+                    //int adasd_2 = TxtBlOutInfo.CaretIndex + 1;
+                    //MessageBox.Show(adasd_0.ToString() + "    " + adasd_1.ToString() + "   " + adasd_2.ToString());
+                    //TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex - 1, 2);
+                    //TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex - 1, 1);
+                    
+                    TxtBlOutInfo.Select(MouseDelete, 1);
+                    string strokatxt = TxtBlOutInfo.SelectedText;
+                    if (strokatxt == "")
+                    {
+                        MouseDelete = TxtBlOutInfo.CaretIndex - 1;
+                        TxtBlOutInfo.Select(MouseDelete, 1);
+                        strokatxt = TxtBlOutInfo.SelectedText;
+                    }
+                    for (int i = 1; i != 0;) //Поиск !
+                    {
+                        char c = strokatxt[0];
+                        string textc = Convert.ToString(c);
+                        if (textc == "!")
+                        {
+                            TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(MouseDelete, 1);
+                            break;
+                        }
+                        else
+                        {
+                            TxtBlOutInfo.Select(MouseDelete - 1, 1);
+                            MouseDelete--;
+                            strokatxt = TxtBlOutInfo.SelectedText;
+                        }
+
+                    }
+                    //SelectedText                
+                    // string sldtxt = TxtBlOutInfo.SelectedText.Remove(Convert.ToInt32(TxtBlOutInfo.Cursor),0);
+                    //  MessageBox.Show(sldtxt.ToString());
+                    //string a = f.GetPosition((Rectangle)sender).ToString();
+                    //TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(TxtBlOutInfo.SelectedText + 1, TxtBlOutInfo.Text.Length);
+                    //MessageBox.Show(a);
+                    //TxtBlOutInfo.Focus();
+                    //TxtBlOutInfo.Select(0, TxtBlOutInfo.Text.Length);
+                    //TxtBlOutInfo.Select(TxtBlOutInfo.CaretIndex-1, TxtBlOutInfo.CaretIndex);
+                    //TxtBlOutInfo.Text.Remove(TxtBlOutInfo.CaretIndex - 1);
+                    //TxtBlOutInfo.SelectedText.Remove(TxtBlOutInfo.CaretIndex-1, TxtBlOutInfo.Text.Length);
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-        }       
+        }
 
         public void FirstMouse() //Координаты мыши начало, для удаления
         {
@@ -549,11 +580,13 @@ namespace SearchText
         }
         public void EndMouse()//Координаты мыши конца, для удаления
         {
-            MouseEnd = TxtBlOutInfo.CaretIndex;
-            TextOld = TxtBlOutInfo.Text;
-            TxtBlOutInfo.Text = TxtBlOutInfo.Text.Insert(TxtBlOutInfo.CaretIndex, "<");
+            //MouseEnd = TxtBlOutInfo.CaretIndex;
+            //TextOld = TxtBlOutInfo.Text;
+            //TxtBlOutInfo.Text = TxtBlOutInfo.Text.Insert(TxtBlOutInfo.CaretIndex, "<");
             DelInfo.IsEnabled = true;
+            BtnFirstMouseDell.IsEnabled = false;
             BtnEndMouseDell.IsEnabled = true;
+            BtnEndMouse.IsEnabled = false;
             //MessageBox.Show(MouseEnd.ToString());
         }
 
@@ -607,7 +640,7 @@ namespace SearchText
             
         }
 
-        public void CheckFirst() //Определение начало строки для руксора
+        public void CheckFirst() //Определение начало строки для начала вырезки
         {
             try
             {
@@ -757,16 +790,179 @@ namespace SearchText
             }
         }
 
+        public void CheckEnd() //Определение начало строки для начала вырезки
+        {
+            try
+            {
+                MouseEnd = TxtBlOutInfo.CaretIndex;
+                if (MouseEnd == 0)
+                {
+                    MessageBox.Show("Выберете место в тексте");
+                }
+                else
+                {
+                    TxtBlOutInfo.Select(MouseEnd, 1);
+                    string strokatxt = TxtBlOutInfo.SelectedText;
+                    for (int i = 1; i != 0;) //Поиск идем вправо
+                    {
+                        int j = 0;
+                        TxtBlOutInfo.Select(MouseEnd + 1, 1);
+                        MouseEnd = MouseEnd + 1;
+                        strokatxt = TxtBlOutInfo.SelectedText;
+                        if (strokatxt == "")
+                        {
+                            TxtBlOutInfo.Select(MouseEnd - 1, 1);
+                            MouseEnd = MouseEnd - 1;
+                            strokatxt = TxtBlOutInfo.SelectedText;
+                        }
+                        char c = strokatxt[0];
+                        string textc = Convert.ToString(c);
+                        if (textc == "X") //Нашили X
+                        {
+                            for (i = 1; i != 0;) //Поиск конца строки, идем вправо
+                            {
+                                TxtBlOutInfo.Select(MouseEnd + 1, 1);
+                                MouseEnd = MouseEnd + 1;
+                                strokatxt = TxtBlOutInfo.SelectedText;
+                                c = strokatxt[0];
+                                textc = Convert.ToString(c);
+                                if (textc == "\r") //Нашли конец строки
+                                {
+                                    MouseEnd = MouseEnd + 4;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (textc == "Y") //Нашили Y
+                        {
+                            for (i = 1; i != 0;) //Поиск начало строки, идем влево
+                            {
+                                TxtBlOutInfo.Select(MouseEnd + 1, 1);
+                                MouseEnd = MouseEnd + 1;
+                                strokatxt = TxtBlOutInfo.SelectedText;
+                                c = strokatxt[0];
+                                textc = Convert.ToString(c);
+                                if (textc == "\r") //Нашли начало строки 
+                                {
+                                    MouseEnd = MouseEnd + 4;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (textc == "Z")
+                        {
+                            for (i = 1; i != 0;) //Поиск начало строки, идем влево
+                            {
+                                TxtBlOutInfo.Select(MouseEnd   + 1, 1);
+                                MouseEnd = MouseEnd + 1;
+                                strokatxt = TxtBlOutInfo.SelectedText;
+                                c = strokatxt[0];
+                                textc = Convert.ToString(c);
+                                if (textc == "\r") //Нашли начало строки 
+                                {
+                                    TxtBlOutInfo.Text = TxtBlOutInfo.Text.Insert(MouseEnd, "<");
+                                    i = 0;
+                                    ProverkaMouseEnd = 1;
+                                    break;
+                                }
+                            }
+                        }
+                        if ((textc == "" || textc == "\r") && i!= 0) //X,Y,Z были левее, нашли конец строки
+                        {
+                            for ( j = 1; j != 0;) //Идем влево
+                            {
+                                TxtBlOutInfo.Select(MouseEnd - 1, 1);
+                                MouseEnd = MouseEnd - 1;
+                                strokatxt = TxtBlOutInfo.SelectedText;
+                                c = strokatxt[0];
+                                textc = Convert.ToString(c);
+                                if (textc == "X") //Если X
+                                {
+                                    for (i = 1; i != 0;) //Идем вправо
+                                    {
+                                        TxtBlOutInfo.Select(MouseEnd + 1, 1);
+                                        MouseEnd = MouseEnd + 1;
+                                        strokatxt = TxtBlOutInfo.SelectedText;
+                                        c = strokatxt[0];
+                                        textc = Convert.ToString(c);
+                                        if (textc == "\r") //Нашли конец строки 
+                                        {                                            
+                                            MouseEnd = MouseEnd + 4;
+                                            j = 0;
+                                            break;
+                                        }
+                                    }
+                                }
+                                else if (textc == "Y")//Если Y
+                                {
+                                    for (i = 1; i != 0;) //Идем вправо
+                                    {
+                                        TxtBlOutInfo.Select(MouseEnd + 1, 1);
+                                        MouseEnd = MouseEnd + 1;
+                                        strokatxt = TxtBlOutInfo.SelectedText;
+                                        c = strokatxt[0];
+                                        textc = Convert.ToString(c);
+                                        if (textc == "\r") //Нашли конец строки 
+                                        {
+                                            MouseEnd = MouseEnd + 4;
+                                            j = 0;
+                                            break;
+                                        }
+                                    }
+                                }
+                                else if (textc == "Z")//Если Z
+                                {
+                                    for (i = 1; i != 0;) //Идем вправо
+                                    {
+                                        TxtBlOutInfo.Select(MouseEnd + 1, 1);
+                                        MouseEnd = MouseEnd + 1;
+                                        strokatxt = TxtBlOutInfo.SelectedText;
+                                        c = strokatxt[0];
+                                        textc = Convert.ToString(c);
+                                        if (textc == "\r") //Нашли конец строки 
+                                        {
+                                            TxtBlOutInfo.Text = TxtBlOutInfo.Text.Insert(MouseEnd, "<");
+                                            j = 0;
+                                            i= 0;
+                                            ProverkaMouseEnd = 1;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
         private void BtnFirstMouseDell_Click(object sender, RoutedEventArgs e) //Координаты мыши начало, для сброса
         {
             MouseDellFirst();
         }
         public void MouseDellEnd()
         {
-            TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(MouseEnd, 1);
-            MouseEnd = 0;
-            DelInfo.IsEnabled = false;
-            BtnEndMouseDell.IsEnabled = false;
+            try
+            {
+                TxtBlOutInfo.Text = TxtBlOutInfo.Text.Remove(MouseEnd, 1);
+                MouseEnd = 0;
+                DelInfo.IsEnabled = false;
+                BtnEndMouseDell.IsEnabled = false;
+                BtnEndMouse.IsEnabled = true;
+                BtnFirstMouseDell.IsEnabled = true;
+            }
+            catch
+            {
+                MouseEnd = 0;
+                DelInfo.IsEnabled = false;
+                BtnEndMouseDell.IsEnabled = false;
+                BtnEndMouse.IsEnabled = true;
+                BtnFirstMouseDell.IsEnabled = true;
+            }
         }
         private void BtnEndMouseDell_Click(object sender, RoutedEventArgs e)
         {
@@ -775,7 +971,12 @@ namespace SearchText
 
         private void BtnEndMouse_Click(object sender, RoutedEventArgs e)
         {
-            EndMouse();
+            CheckEnd();
+            if (MouseEnd != 0)
+            {
+                EndMouse();
+            }
+
         }
         private void BtnBack_Click(object sender, RoutedEventArgs e)
         {
