@@ -1,5 +1,14 @@
+!
+43243
+dfdsf
+fdsfdsfffffffffffffffffffffffffffffffffffffffffffffffddsfdsfdsdsfsdfdsfdssdfsdfsfd
+fdsf
+sfddsf
+!
+
 ind	x       y        z
-1 0.0000 385.2132 379.4068
+
+1 0.0001 385.2132 379.4068
 2 77.0079 378.1865 379.0630
 3 150.7798 357.3387 378.2277
 4 218.1933 323.1930 377.3284
