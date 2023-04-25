@@ -647,7 +647,7 @@ namespace SearchText
                 MouseFirst = TxtBlOutInfo.CaretIndex;
                 if (MouseFirst == 0)
                 {
-                    MessageBox.Show("Выберете место в тексте");
+                    MessageBox.Show("Выберите место в тексте");
                 }
                 else
                 {                    
